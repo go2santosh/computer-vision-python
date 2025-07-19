@@ -1,6 +1,7 @@
 import argparse
 import sys
 import torch
+import torchvision
 import torchvision.transforms as transforms
 import pandas as pd
 import numpy as np
@@ -53,26 +54,6 @@ def train_model_on_fashionmnist(model, model_name, transform=None, version=None)
     use_gpu = args.use_gpu
     use_tensorboard = args.use_tensorboard
     save_model = args.save_model
-    
-    # Read the training and validation datasets into DataFrames
-    print("Loading training data from csv file...")
-    train_data_df = pd.read_csv('datasets/fashion-mnist/fashion-mnist_train.csv')
-    print("Training data shape:", train_data_df.shape)
-    sys.stdout.flush()
-
-    # Separate images and labels
-    print("Separating images and labels...")
-    X_train_original = train_data_df.iloc[:, 1:].values # All columns except the first (label)
-    y_train_original = train_data_df.iloc[:, 0].values # First column (label)
-    print(f"X_train shape: {X_train_original.shape}, y_train shape: {y_train_original.shape}")
-    sys.stdout.flush()
-
-    # Split into training and validation sets
-    print("Splitting data into training and validation sets...")
-    X_train, X_val, y_train, y_val = train_test_split(X_train_original, y_train_original, test_size=0.2, random_state=42) # 20% for validation
-    print(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
-    print(f"X_val shape: {X_val.shape}, y_val shape: {y_val.shape}")
-    sys.stdout.flush()
 
     # Use default transformation if none is provided
     if transform is None:
@@ -84,8 +65,9 @@ def train_model_on_fashionmnist(model, model_name, transform=None, version=None)
 
     # Load the training and validation datasets
     print("Creating FashionMNIST datasets...")
-    train_dataset = FashionMNISTDataset(np.column_stack((y_train, X_train)), transform=transform)
-    validate_dataset = FashionMNISTDataset(np.column_stack((y_val, X_val)), transform=transform)
+    custom_data_root = './datasets'
+    train_dataset = torchvision.datasets.FashionMNIST(root=custom_data_root, train=True, transform=transform, download=False)
+    validate_dataset = torchvision.datasets.FashionMNIST(root=custom_data_root, train=False, transform=transform, download=False)
 
     # Create DataLoaders for the datasets
     print("Creating DataLoaders for training and validation datasets...")
