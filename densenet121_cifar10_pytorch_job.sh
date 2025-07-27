@@ -5,8 +5,8 @@
 #SBATCH --mincpus=16
 #SBATCH --job-name=python
 #SBATCH --chdir=/data/home/ss231/computer-vision-python
-#SBATCH --output=cifar10_densenet121_pytorch.out
-#SBATCH --error=cifar10_densenet121_pytorch.err
+#SBATCH --output=densenet121_cifar10_pytorch.out
+#SBATCH --error=densenet121_cifar10_pytorch.err
 #SBATCH --time=6-12:00:00
 
 # Load necessary modules
@@ -14,14 +14,14 @@
 module load python/3.12.8
 
 # Experimental model training
-python /data/home/ss231/computer-vision-python/cifar10_densenet121_pytorch.py \
+python /data/home/ss231/computer-vision-python/densenet121_cifar10_pytorch.py \
     --use_tensorboard \
     --use_gpu \
     --epochs 100 \
     --optimizer sgd
 
 # Final model training with hyperparameter tuning
-# python /data/home/ss231/computer-vision-python/cifar10_densenet121_pytorch.py \
+# python /data/home/ss231/computer-vision-python/densenet121_cifar10_pytorch.py \
 #    --use_gpu \
 #    --epochs 15 \
 #    --optimizer sgd \

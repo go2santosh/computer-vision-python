@@ -18,7 +18,7 @@ if __name__ == "__main__":
     model=models.densenet121(pretrained=False)
     train_model_on_cifar10(
         model=model, 
-        model_name="cifar10_densenet121_pytorch", 
+        model_name="densenet121_cifar10_pytorch", 
         transform=transform)
     print(f"Completed training.\n")
     sys.stdout.flush()
