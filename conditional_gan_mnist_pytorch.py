@@ -105,8 +105,8 @@ def train_conditional_gan(generator, discriminator, data_loader, num_epochs=100)
         if (epoch + 1) % 5 == 0:
             if not os.path.exists(saved_models_dir):
                 os.makedirs(saved_models_dir)
-            torch.save(generator.state_dict(), f'{saved_models_dir}/conditional_generator_epoch_{epoch+1}.pth')
-            torch.save(discriminator.state_dict(), f'{saved_models_dir}/conditional_discriminator_epoch_{epoch+1}.pth')
+            torch.save(generator.state_dict(), f'{saved_models_dir}/conditional_gan_generator_epoch_{epoch+1}.pth')
+            torch.save(discriminator.state_dict(), f'{saved_models_dir}/conditional_gan_discriminator_epoch_{epoch+1}.pth')
 
         # Save the image generated at every 5 epochs
         if (epoch + 1) % 5 == 0:
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     discriminator = ConditionalDiscriminator(784, label_dim)
 
     # Train the Conditional GAN
-    max_epochs = 200
+    max_epochs = 70
     print(f"Training Conditional GAN on MNIST dataset for {max_epochs} epochs.")
     sys.stdout.flush()
     train_conditional_gan(generator, discriminator, train_loader, num_epochs=max_epochs)
