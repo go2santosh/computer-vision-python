@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 saved_models/aglcgan_sots_pytorch/my_checkpoint_1.pk
+/datasets/CelebA
