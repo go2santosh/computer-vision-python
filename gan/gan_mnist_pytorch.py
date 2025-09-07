@@ -8,17 +8,18 @@ from torch.autograd import Variable
 from torchvision.utils import save_image
 from torch.utils.tensorboard import SummaryWriter
 import sys
+import os
 
 # Experiment settings
 batch_size = 64 # Batch size
 learning_rate = 0.0002 # Learning rate
 z_dim = 100 # Dimension of the noise vector
 max_epochs = 200 # Number of epochs to train the model
-mnist_data_root = './datasets' # Root directory for the MNIST dataset
-saved_models_dir = './saved_models' # Model weight save directory
+mnist_data_root = '../datasets' # Root directory for the MNIST dataset
+saved_models_dir = '../saved_models' # Model weight save directory
 experiment_name = 'gan_mnist_pytorch' # Name of the experiment
-output_dir = './data/' + experiment_name + '_output' # Output directory for generated images
-tensorboard_log_dir = './runs/' + experiment_name # TensorBoard log directory
+output_dir = '../data/' + experiment_name + '_output' # Output directory for generated images
+tensorboard_log_dir = '../runs/' + experiment_name # TensorBoard log directory
 
 # Check if a GPU is available and set the device accordingly
 if torch.accelerator.is_available():
@@ -170,10 +171,12 @@ for epoch in range(1, max_epochs+1):
     writer.flush()
 
     # Save the generator and discriminator models for every epoch
-    torch.save(generator_model.state_dict(), saved_models_dir + '/' + experiment_name + '_G_epoch_' + str(epoch) + '.pth')
-    torch.save(discriminator_model.state_dict(), saved_models_dir + '/' + experiment_name + '_D_epoch_' + str(epoch) + '.pth')
+    os.makedirs(saved_models_dir + '/' + experiment_name, exist_ok=True)
+    torch.save(generator_model.state_dict(), saved_models_dir + '/' + experiment_name + '/' + experiment_name + '_G_epoch_' + str(epoch) + '.pth')
+    torch.save(discriminator_model.state_dict(), saved_models_dir + '/' + experiment_name + '/' + experiment_name + '_D_epoch_' + str(epoch) + '.pth')
 
     # Save image for every epoch
+    os.makedirs(output_dir, exist_ok=True)
     with torch.no_grad():
         test_z = Variable(torch.randn(batch_size, z_dim).to(device))
         generated = generator_model(test_z)
